@@ -97,8 +97,7 @@ public:
     if (y < 0 || y > 7) {
       return -2;
     }
-    if (p == Rook || p == Knight || p == Bishop || p == Queen || p == King ||
-        p == Pawn) {
+    if (p == Rook && p == Knight && p == Bishop && p == Queen && p == King && p == Pawn) {
       return -3;
     }
     bool occupied;
