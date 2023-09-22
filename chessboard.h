@@ -221,7 +221,7 @@ public:
     }else{
       return -7;
     }
-    place(toX, toY, fromColor, fromPiece);
+    chessboard[toX][toY] = Square(fromColor, fromPiece);
     chessboard[fromX][fromY] = Square();
     return 1;
   }
