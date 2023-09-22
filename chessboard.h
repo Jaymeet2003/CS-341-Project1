@@ -155,7 +155,7 @@ public:
         chessboard[x][y].get(occupiedCheck, c, p);
 
         if (occupiedCheck) {
-          return -7;
+          return 1;
         }
 
         x += stepX;
@@ -164,7 +164,7 @@ public:
     } else if (fromPiece == Knight &&
                ((diffValX != 2 && diffValY != 1) ||
                 (diffValX != 1 && diffValY != 2))) { // Knight
-      return -7;
+      return 1;
     } else if (fromPiece == Rook && (diffValX == 0 || diffValY == 0)) { // Rook
       int stepX = (toX > fromX) ? 1 : (toX < fromX) ? -1 : 0;
       int stepY = (toY > fromY) ? 1 : (toY < fromY) ? -1 : 0;
@@ -179,7 +179,7 @@ public:
         chessboard[x][y].get(occupiedCheck, c, p);
 
         if (occupiedCheck) {
-          return -7;
+          return 1;
         }
 
         x += stepX;
@@ -201,14 +201,14 @@ public:
         chessboard[x][y].get(occupiedCheck, c, p);
 
         if (occupiedCheck) {
-          return -7;
+          return 1;
         }
 
         x += stepX;
         y += stepY;
       }
     } else if (fromPiece == King && !(diffValX <= 1 && diffValY <= 1)) { // King
-      return -7;
+      return 1;
     } else if (fromPiece == Pawn) { // Pawn
       int direction = (fromColor == White) ? 1 : -1;
 
@@ -216,17 +216,17 @@ public:
       int dy = toY - fromY;
 
       if (!(dx == 0 && dy == direction)) {
-        return -7;
+        return 1;
       } else if (!(fromY == (fromColor == White ? 1 : 6) && dx == 0 &&
                    dy == 2 * direction)) {
-        return -7;
+        return 1;
       } else if (!(abs(dx) == 1 && dy == direction)) {
-        return -7;
+        return 1;
       }
     }
     place(toX, toY, fromColor, fromPiece);
     chessboard[fromX][fromY] = Square();
-    return 1;
+    return -7;
   }
 
   void print();
