@@ -159,11 +159,11 @@ public:
         y += stepY;
       }
     } else if (fromPiece == Knight &&
-               ((diffValX == 2 && diffValY == 1) ||
+               !((diffValX == 2 && diffValY == 1) ||
                 (diffValX == 1 && diffValY == 2))) { // Knight
 
                 // Valid move do nothing
-    } else if (fromPiece == Rook && (diffValX == 0 || diffValY == 0)) { // Rook
+    } else if (fromPiece == Rook && !(diffValX == 0 || diffValY == 0)) { // Rook
       int stepX = (toX > fromX) ? 1 : (toX < fromX) ? -1 : 0;
       int stepY = (toY > fromY) ? 1 : (toY < fromY) ? -1 : 0;
 
