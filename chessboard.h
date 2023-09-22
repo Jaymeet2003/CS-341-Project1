@@ -138,7 +138,7 @@ public:
 
     // Bishop
 
-    if (fromPiece == Bishop && diffValX == diffValY) {
+    if (fromPiece == Bishop && !(diffValX == diffValY)) {
       int stepX = (toX > fromX) ? 1 : -1;
       int stepY = (toY > fromY) ? 1 : -1;
 
@@ -159,10 +159,11 @@ public:
         y += stepY;
       }
     } else if (fromPiece == Knight &&
-               (!(diffValX != 2 && diffValY != 1) ||
-                (diffValX != 1 && diffValY != 2))) { // Knight
-      return -7;
-    } else if (fromPiece == Rook && !(diffValX == 0 || diffValY == 0)) { // Rook
+               ((diffValX == 2 && diffValY == 1) ||
+                (diffValX == 1 && diffValY == 2))) { // Knight
+
+                // Valid move do nothing
+    } else if (fromPiece == Rook && (diffValX == 0 || diffValY == 0)) { // Rook
       int stepX = (toX > fromX) ? 1 : (toX < fromX) ? -1 : 0;
       int stepY = (toY > fromY) ? 1 : (toY < fromY) ? -1 : 0;
 
@@ -170,12 +171,12 @@ public:
       int y = fromY + stepY;
 
       while (x != toX || y != toY) {
-        bool occupiedCheck;
+        int occupiedCheck;
         Color c;
         Piece p;
-        chessboard[x][y].get(occupiedCheck, c, p);
+        occupiedCheck = get(x, y, c, p);
 
-        if (occupiedCheck) {
+        if (occupiedCheck == 1) {
           return -7;
         }
 
@@ -183,7 +184,7 @@ public:
         y += stepY;
       }
 
-    } else if (fromPiece == Queen && !(diffValX == 0 || diffValY == 0 ||
+    } else if (fromPiece == Queen && (diffValX == 0 || diffValY == 0 ||
                                       diffValX == diffValY)) { // Queen
       int stepX = (toX > fromX) ? 1 : (toX < fromX) ? -1 : 0;
       int stepY = (toY > fromY) ? 1 : (toY < fromY) ? -1 : 0;
@@ -192,12 +193,12 @@ public:
       int y = fromY + stepY;
 
       while (x != toX || y != toY) {
-        bool occupiedCheck;
+        int occupiedCheck;
         Color c;
         Piece p;
-        chessboard[x][y].get(occupiedCheck, c, p);
+        occupiedCheck = get(x, y, c, p);
 
-        if (occupiedCheck) {
+        if (occupiedCheck == 1) {
           return -7;
         }
 
@@ -205,21 +206,20 @@ public:
         y += stepY;
       }
     } else if (fromPiece == King && (diffValX <= 1 && diffValY <= 1)) { // King
-      return -7;
+      // valid move do nothing
     } else if (fromPiece == Pawn) { // Pawn
       int direction = (fromColor == White) ? 1 : -1;
 
       int dx = toX - fromX;
       int dy = toY - fromY;
 
-      if ((dx == 0 && dy == direction)) {
-        return -7;
-      } else if (!(fromY == (fromColor == White ? 1 : 6) && dx == 0 &&
-                   dy == 2 * direction)) {
-        return -7;
-      } else if ((abs(dx) == 1 && dy == direction)) {
+      if((dx == 0 && dy == direction) || (fromY == (fromColor == White ? 1 : 6) && dx == 0 && dy == 2 * direction) || (abs(dx) == 1 && dy == direction)){
+        // valid move do nothing
+      }else{
         return -7;
       }
+    }else{
+      return -7;
     }
     place(toX, toY, fromColor, fromPiece);
     chessboard[fromX][fromY] = Square();
