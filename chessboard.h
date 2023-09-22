@@ -128,7 +128,7 @@ public:
       return -5;
     }
 
-    if (occupiedTo == 1 && toColor == fromColor) {
+    if ((occupiedTo == 1 && toColor == fromColor) || (occupiedFrom == 1 && toColor == fromColor)) {
       return -6;
     }
     // -7 remaining - check of any intermediate piece in between the move
