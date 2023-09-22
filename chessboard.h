@@ -97,12 +97,6 @@ public:
     if (y < 0 || y > 7) {
       return -2;
     }
-<<<<<<< HEAD
-=======
-    if (p != Rook || p != Knight || p != Bishop || p != Queen || p != King || p != Pawn) {
-      return -3;
-    }
->>>>>>> 71dd4b2043a5d500bb886b7636c96dec47dc6fe4
     bool occupied;
     chessboard[x][y].get(occupied, c, p);
     if(occupied == false){
