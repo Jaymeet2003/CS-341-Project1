@@ -159,10 +159,10 @@ public:
         y += stepY;
       }
     } else if (fromPiece == Knight &&
-               ((diffValX != 2 && diffValY != 1) ||
+               (!(diffValX != 2 && diffValY != 1) ||
                 (diffValX != 1 && diffValY != 2))) { // Knight
       return -7;
-    } else if (fromPiece == Rook && (diffValX == 0 || diffValY == 0)) { // Rook
+    } else if (fromPiece == Rook && !(diffValX == 0 || diffValY == 0)) { // Rook
       int stepX = (toX > fromX) ? 1 : (toX < fromX) ? -1 : 0;
       int stepY = (toY > fromY) ? 1 : (toY < fromY) ? -1 : 0;
 
@@ -183,7 +183,7 @@ public:
         y += stepY;
       }
 
-    } else if (fromPiece == Queen && (diffValX == 0 || diffValY == 0 ||
+    } else if (fromPiece == Queen && !(diffValX == 0 || diffValY == 0 ||
                                       diffValX == diffValY)) { // Queen
       int stepX = (toX > fromX) ? 1 : (toX < fromX) ? -1 : 0;
       int stepY = (toY > fromY) ? 1 : (toY < fromY) ? -1 : 0;
@@ -204,7 +204,7 @@ public:
         x += stepX;
         y += stepY;
       }
-    } else if (fromPiece == King && !(diffValX <= 1 && diffValY <= 1)) { // King
+    } else if (fromPiece == King && (diffValX <= 1 && diffValY <= 1)) { // King
       return -7;
     } else if (fromPiece == Pawn) { // Pawn
       int direction = (fromColor == White) ? 1 : -1;
@@ -212,12 +212,12 @@ public:
       int dx = toX - fromX;
       int dy = toY - fromY;
 
-      if (!(dx == 0 && dy == direction)) {
+      if ((dx == 0 && dy == direction)) {
         return -7;
       } else if (!(fromY == (fromColor == White ? 1 : 6) && dx == 0 &&
                    dy == 2 * direction)) {
         return -7;
-      } else if (!(abs(dx) == 1 && dy == direction)) {
+      } else if ((abs(dx) == 1 && dy == direction)) {
         return -7;
       }
     }
