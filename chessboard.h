@@ -119,18 +119,16 @@ public:
     if (toY < 0 || toY > 7) {
       return -4;
     }
-    bool occupiedFrom, occupiedTo;
     Color fromColor, toColor;
     Piece fromPiece, toPiece;
-    chessboard[fromX][fromY].get(occupiedFrom, fromColor, fromPiece);
+    int occupiedFrom = get(fromX, fromY, fromColor, fromPiece);
+    int occupiedTo = get(toX, toY, toColor, toPiece);
 
-    if (occupiedFrom == false) {
+    if (occupiedFrom != 1) {
       return -5;
     }
 
-    chessboard[toX][toY].get(occupiedTo, toColor, toPiece);
-
-    if (occupiedTo == true && fromColor == toColor) {
+    if (occupiedTo == 1 && toColor == fromColor) {
       return -6;
     }
     // -7 remaining - check of any intermediate piece in between the move
