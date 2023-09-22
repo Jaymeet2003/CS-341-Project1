@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "COMMIT_EDITMSG": "c",
+        "utility": "cpp",
+        "map": "cpp",
+        "iostream": "cpp"
+    }
+}
