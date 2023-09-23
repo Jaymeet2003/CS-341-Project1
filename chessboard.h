@@ -136,90 +136,41 @@ public:
     int diffValX = abs(toX - fromX);
     int diffValY = abs(toY - fromY);
 
-    // Bishop
-
-    if (fromPiece == Bishop && !(diffValX == diffValY)) {
-      int stepX = (toX > fromX) ? 1 : -1;
-      int stepY = (toY > fromY) ? 1 : -1;
-
-      int x = fromX + stepX;
-      int y = fromY + stepY;
-
-      while (x != toX && y != toY) {
-        bool occupiedCheck;
-        Color c;
-        Piece p;
-        chessboard[x][y].get(occupiedCheck, c, p);
-
-        if (occupiedCheck) {
-          return -7;
+    switch (fromPiece) {
+        case Rook: {
+            // Rooks can move any number of squares vertically or horizontally
+            if (!(diffValX == 0 || diffValY == 0)) return -7;
+            break;
         }
-
-        x += stepX;
-        y += stepY;
-      }
-    } else if (fromPiece == Knight &&
-               ((diffValX == 2 && diffValY == 1) ||
-                (diffValX == 1 && diffValY == 2))) { // Knight
-
-                // Valid move do nothing
-    } else if (fromPiece == Rook && (diffValX == 0 || diffValY == 0)) { // Rook
-      int stepX = (toX > fromX) ? 1 : (toX < fromX) ? -1 : 0;
-      int stepY = (toY > fromY) ? 1 : (toY < fromY) ? -1 : 0;
-
-      int x = fromX + stepX;
-      int y = fromY + stepY;
-
-      while (x != toX || y != toY) {
-        int occupiedCheck;
-        Color c;
-        Piece p;
-        occupiedCheck = get(x, y, c, p);
-
-        if (occupiedCheck == 1) {
-          return -7;
+        case Knight: {
+            // Knights move in an L-shape: 2 squares in one direction and 1 square perpendicular to it
+            if (!((diffValX == 1 && diffValY == 2) || (diffValX == 2 && diffValY == 1))) return -7;
+            break;
         }
-
-        x += stepX;
-        y += stepY;
-      }
-
-    } else if (fromPiece == Queen && (diffValX == 0 || diffValY == 0 ||
-                                      diffValX == diffValY)) { // Queen
-      int stepX = (toX > fromX) ? 1 : (toX < fromX) ? -1 : 0;
-      int stepY = (toY > fromY) ? 1 : (toY < fromY) ? -1 : 0;
-
-      int x = fromX + stepX;
-      int y = fromY + stepY;
-
-      while (x != toX || y != toY) {
-        int occupiedCheck;
-        Color c;
-        Piece p;
-        occupiedCheck = get(x, y, c, p);
-
-        if (occupiedCheck == 1) {
-          return -7;
+        case Bishop: {
+            // Bishops can move any number of squares diagonally
+            if (diffValX != diffValY) return -7;
+            break;
         }
-
-        x += stepX;
-        y += stepY;
-      }
-    } else if (fromPiece == King && (diffValX <= 1 && diffValY <= 1)) { // King
-      // valid move do nothing
-    } else if (fromPiece == Pawn) { // Pawn
-      int direction = (fromColor == White) ? 1 : -1;
-
-      int dx = toX - fromX;
-      int dy = toY - fromY;
-
-      if((dx == 0 && dy == direction) || (fromY == (fromColor == White ? 1 : 6) && dx == 0 && dy == 2 * direction) || (abs(dx) == 1 && dy == direction)){
-        // valid move do nothing
-      }else{
-        return -7;
-      }
-    }else{
-      return -7;
+        case Queen: {
+            // Queens can move any number of squares vertically, horizontally, or diagonally
+            if (!(diffValX == 0 || diffValY == 0 || diffValX == diffValY)) return -7;
+            break;
+        }
+        case King: {
+            // Kings can move one square in any direction
+            if (diffValX > 1 || diffValY > 1) return -7;
+            break;
+        }
+        case Pawn: {
+            // Pawns can move forward one square, or two squares from their starting position
+            // Pawns can also move diagonally forward one square to capture an opponent's piece
+            int direction = (fromColor == White) ? 1 : -1;
+            if (!((diffValX == 0 && diffValY == direction) ||
+                  (fromY == (fromColor == White ? 1 : 6) && diffValX == 0 && diffValY == 2 * direction) ||
+                  (occupiedTo == 1 && diffValX == 1 && diffValY == direction))) return -7;
+            break;
+        }
     }
     chessboard[toX][toY] = Square(fromColor, fromPiece);
     chessboard[fromX][fromY] = Square();
