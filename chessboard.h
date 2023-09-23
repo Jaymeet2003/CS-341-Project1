@@ -244,8 +244,8 @@ public:
 
   void xy(int &x, int &y) { // break position down into x and y
     // fill out
-    x = position / 8;
-    y = position % 8;
+    x = position % 8;
+    y = position / 8;
   }
 
   // return the square
@@ -266,6 +266,6 @@ public:
   // needed to support foreach
   int operator!=(const ChessboardIterator &a) {
     // fill out
-    return position != a.position;
+    return position != a.position; 
   }
 };

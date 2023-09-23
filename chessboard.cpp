@@ -90,29 +90,30 @@ void Chessboard::print() {
       square.get(occupied, color, piece);
 
       std::string symbol =
-          "  "; // Initialize with two empty spaces for unoccupied squares
+          " . "; // Initialize with two empty spaces for unoccupied squares
 
       if (occupied) {
         switch (piece) {
         case Rook:
-          symbol = (color == White) ? "wR " : "bR ";
+          symbol = (color == White) ? "bR " : "wR ";
           break;
         case Knight:
-          symbol = (color == White) ? "wN " : "bN ";
+          symbol = (color == White) ? "bN " : "wN ";
           break;
         case Bishop:
-          symbol = (color == White) ? "wB " : "bB ";
+          symbol = (color == White) ? "bB " : "wB ";
           break;
         case Queen:
-          symbol = (color == White) ? "wQ " : "bQ ";
+          symbol = (color == White) ? "bQ " : "wQ ";
           break;
         case King:
-          symbol = (color == White) ? "wK " : "bK ";
+          symbol = (color == White) ? "bK " : "wK ";
           break;
         case Pawn:
-          symbol = (color == White) ? "wP " : "bP ";
+          symbol = (color == White) ? "bP " : "wP ";
           break;
         default:
+          symbol = ".";
           break;
         }
       }
