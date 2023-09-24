@@ -166,14 +166,33 @@ public:
             // Pawns can move forward one square, or two squares from their starting position
             // Pawns can also move diagonally forward one square to capture an opponent's piece
             int direction = (fromColor == White) ? 1 : -1;
+            bool isForwardMove = diffValX == 0 && diffValY == direction;
+            bool isDoubleForwardMove = fromY == (fromColor == White ? 1 : 6) && diffValX == 0 && diffValY == 2 * direction;
             bool isDiagonalMove = diffValX == 1 && diffValY == direction;
             
-            if (!((diffValX == 0 && diffValY == direction && occupiedTo == 0) ||
-                  (fromY == (fromColor == White ? 1 : 6) && diffValX == 0 && diffValY == 2 * direction && occupiedTo == 0) ||
-                  (isDiagonalMove && occupiedTo == 1 && fromColor != toColor))) {
-                return -7;
+            // Forward move
+            if (isForwardMove && occupiedTo == 0) {
+                break;
             }
-            break;
+
+            // Double forward move from starting position
+            if (isDoubleForwardMove && occupiedTo == 0) {
+                // Additionally, check if the square in-between is unoccupied
+                bool inBetweenOccupied;
+                Color inBetweenColor;
+                Piece inBetweenPiece;
+                get(fromX, fromY + direction, inBetweenColor, inBetweenPiece);
+                if (inBetweenOccupied) return -7;
+                break;
+            }
+
+            // Diagonal capturing move
+            if (isDiagonalMove && occupiedTo == 1 && fromColor != toColor) {
+                break;
+            }
+
+            // If none of the above conditions are met, the move is illegal
+            return -7;
         }
     }
     chessboard[toX][toY] = Square(fromColor, fromPiece);
