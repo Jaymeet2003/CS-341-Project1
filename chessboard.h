@@ -73,6 +73,7 @@ public:
     bool occupied;
     Color co;
     Piece pi;
+    // get piece and color at loaction x,y coordinate of board
     chessboard[x][y].get(occupied, co, pi);
     if (occupied == true) {
       return -3;
@@ -98,7 +99,7 @@ public:
       return -2;
     }
     bool occupied;
-    chessboard[x][y].get(occupied, c, p);
+    chessboard[x][y].get(occupied, c, p); // get piece and color at loaction x,y coordinate of board
     if(occupied == false){
       return -3;
     }
@@ -212,14 +213,14 @@ public:
   ChessboardIterator(Chessboard &board,
                      int pos) { // start out with an empty board
     // fill out
-    this->chessboard = board;
-    this->position = pos;
+    this->chessboard = board; // initiallizing chessboard with board
+    this->position = pos; // initiallizing position with pos
   }
 
   void xy(int &x, int &y) { // break position down into x and y
     // fill out
-    x = position % 8;
-    y = position / 8;
+    x = position % 8; // converting x postioion to get 0-8 coordinates
+    y = position / 8; // converting y postioion to get 0-8 coordinates
   }
 
   // return the square
@@ -227,19 +228,19 @@ public:
     // fill out
     int x, y;
     xy(x, y);
-    return chessboard.square(x, y);
+    return chessboard.square(x, y); // returning square
   }
 
   // pre-increment
   ChessboardIterator &operator++() {
     // fill out
-    ++position;
+    ++position; // updating the row position for iterator
     return *this;
   }
 
   // needed to support foreach
   int operator!=(const ChessboardIterator &a) {
     // fill out
-    return position != a.position; 
+    return position != a.position; // checking the position for iterator
   }
 };

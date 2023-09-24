@@ -25,52 +25,6 @@ ChessboardIterator Chessboard::end() {
 void Chessboard::print() {
   // fill out
 
-  // for(auto it = begin(); it != end(); ++it){
-  //   int x, y;
-  //   it.xy(x, y);
-
-  //   Square sq = *it;
-
-  //   bool occupied;
-  //   Color c;
-  //   Piece p;
-
-  //   sq.get(occupied,c,p);
-  //   string symbol = " ";
-
-  //   if(occupied == true){
-
-  //     switch(p){
-  //       case Rook:
-  //         symbol = (c ==  White) ? "wR" : "bR";
-  //         break;
-  //       case Knight:
-  //         symbol = (c ==  White) ? "wN" : "bN";
-  //         break;
-  //       case Bishop:
-  //         symbol = (c ==  White) ? "wB" : "bB";
-  //         break;
-  //       case Queen:
-  //         symbol = (c ==  White) ? "wQ" : "bQ";
-  //         break;
-  //       case King:
-  //         symbol = (c ==  White) ? "wK" : "bK";
-  //         break;
-  //       case Pawn:
-  //         symbol = (c ==  White) ? "wP" : "bP";
-  //         break;
-  //       default:
-  //         break;
-  //     }
-  // }
-
-  //   cout << symbol << " ";
-
-  //   if((x + 1) % 8 == 0){
-  //     cout << endl;
-  //   }
-  // }
-
   for (int y = 0; y < 8; ++y) {
     ChessboardIterator it = begin();
 
@@ -113,7 +67,6 @@ void Chessboard::print() {
           symbol = (color == White) ? "bP " : "wP ";
           break;
         default:
-          symbol = ".";
           break;
         }
       }
