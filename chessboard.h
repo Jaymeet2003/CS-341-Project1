@@ -107,35 +107,94 @@ public:
 
   int move(int fromX, int fromY, int toX, int toY) {
     // fill out
-    if (fromX < 0 || fromX > 7) return -1;
-    if (fromY < 0 || fromY > 7) return -2;
-    if (toX < 0 || toX > 7) return -3;
-    if (toY < 0 || toY > 7) return -4;
-
+    if (fromX < 0 || fromX > 7) {
+      return -1;
+    }
+    if (fromY < 0 || fromY > 7) {
+      return -2;
+    }
+    if (toX < 0 || toX > 7) {
+      return -3;
+    }
+    if (toY < 0 || toY > 7) {
+      return -4;
+    }
     Color fromColor, toColor;
     Piece fromPiece, toPiece;
-    bool fromOccupied = get(fromX, fromY, fromColor, fromPiece) == 1;
-    bool toOccupied = get(toX, toY, toColor, toPiece) == 1;
+    int occupiedFrom = get(fromX, fromY, fromColor, fromPiece);
+    int occupiedTo = get(toX, toY, toColor, toPiece);
 
-    if (!fromOccupied) return -5;
-    if (toOccupied && fromColor == toColor) return -6;
+    if (occupiedFrom != 1) {
+      return -5;
+    }
 
+    if (occupiedTo == 1 && (toColor == fromColor)) {
+      return -6;
+    }
+    // -7 remaining - check of any intermediate piece in between the move
+    // -7 implementation
     int diffValX = abs(toX - fromX);
     int diffValY = abs(toY - fromY);
 
     switch (fromPiece) {
-        // ... (other cases remain the same)
-        
-        case Pawn:
+        case Rook: {
+            // Rooks can move any number of squares vertically or horizontally
+            if (!(diffValX == 0 || diffValY == 0)) return -7;
+            break;
+        }
+        case Knight: {
+            // Knights move in an L-shape: 2 squares in one direction and 1 square perpendicular to it
+            if (!((diffValX == 1 && diffValY == 2) || (diffValX == 2 && diffValY == 1))) return -7;
+            break;
+        }
+        case Bishop: {
+            // Bishops can move any number of squares diagonally
+            if (diffValX != diffValY) return -7;
+            break;
+        }
+        case Queen: {
+            // Queens can move any number of squares vertically, horizontally, or diagonally
+            if (!(diffValX == 0 || diffValY == 0 || diffValX == diffValY)) return -7;
+            break;
+        }
+        case King: {
+            // Kings can move one square in any direction
+            if (diffValX > 1 || diffValY > 1) return -7;
+            break;
+        }
+        case Pawn: {
+            // Pawns can move forward one square, or two squares from their starting position
+            // Pawns can also move diagonally forward one square to capture an opponent's piece
             int direction = (fromColor == White) ? 1 : -1;
             bool isForwardMove = diffValX == 0 && diffValY == direction;
+            bool isDoubleForwardMove = fromY == (fromColor == White ? 1 : 6) && diffValX == 0 && diffValY == 2 * direction;
             bool isDiagonalMove = diffValX == 1 && diffValY == direction;
+            
+            // Forward move
+            if (isForwardMove && occupiedTo == 0) {
+                break;
+            }
 
-            if (isForwardMove && !toOccupied) break;
-            if (isDiagonalMove && toOccupied && fromColor != toColor) break;
-            return -7; // Any other Pawn move is illegal
+            // Double forward move from starting position
+            if (isDoubleForwardMove && occupiedTo == 0) {
+                // Additionally, check if the square in-between is unoccupied
+                bool inBetweenOccupied;
+                Color inBetweenColor;
+                Piece inBetweenPiece;
+                get(fromX, fromY + direction, inBetweenColor, inBetweenPiece);
+                if (inBetweenOccupied) return -7;
+                break;
+            }
+
+            // Diagonal capturing move
+            if (isDiagonalMove && occupiedTo == 1 && fromColor != toColor) {
+                break;
+            }
+
+            // If none of the above conditions are met, the move is illegal
+            return -7;
+        }
     }
-
     chessboard[toX][toY] = Square(fromColor, fromPiece);
     chessboard[fromX][fromY] = Square();
     return 1;
