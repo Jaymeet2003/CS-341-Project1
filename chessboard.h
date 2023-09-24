@@ -166,9 +166,13 @@ public:
             // Pawns can move forward one square, or two squares from their starting position
             // Pawns can also move diagonally forward one square to capture an opponent's piece
             int direction = (fromColor == White) ? 1 : -1;
-            if (!((diffValX == 0 && diffValY == direction) ||
-                  (fromY == (fromColor == White ? 1 : 6) && diffValX == 0 && diffValY == 2 * direction) ||
-                  (occupiedTo == 1 && diffValX == 1 && diffValY == direction))) return -7;
+            bool isDiagonalMove = diffValX == 1 && diffValY == direction;
+            
+            if (!((diffValX == 0 && diffValY == direction && occupiedTo == 0) ||
+                  (fromY == (fromColor == White ? 1 : 6) && diffValX == 0 && diffValY == 2 * direction && occupiedTo == 0) ||
+                  (isDiagonalMove && occupiedTo == 1 && fromColor != toColor))) {
+                return -7;
+            }
             break;
         }
     }
